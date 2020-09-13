@@ -19,6 +19,7 @@ train_file = sys.argv[8] if len(sys.argv) > 8 else "train_NOTA_1M.json"
 if train_file == "":
     train_file = filename[filename.find('_') + 1:] + "_" + str(size)
 prefix = ""
+print("The seed is ",seed)
 random.seed(seed)
 np.random.seed(seed)
 # data = {"train":"train_" + str(size[0]) + ".json","val":"val_" +str(size[1])}
