@@ -10,20 +10,20 @@ local models = {
 };
 
 local train_data = {
-"100k": "FEWREL_data/episodes/train_10w_1s_5q_100K_50_NOTA_rate_seed_456.json",
-"5_shot_100k": "FEWREL_data/episodes/train_5w_5s_5q_100K_50_NOTA_rate_seed_456.json",
+"1_shot": "FEWREL_data/episodes/train_10w_1s_5q_100K_50_NOTA_rate_seed_456.json",
+"5_shot": "FEWREL_data/episodes/train_5w_5s_5q_100K_50_NOTA_rate_seed_456.json",
 };
 
 local dev_data = {
-"100k": "FEWREL_data/episodes/DEV_5w_1s_5q_10K_50_NOTA_rate_seed_456.json",
-"5_shot_100k": "FEWREL_data/episodes/DEV_5w_5s_5q_10K_50_NOTA_rate_seed_456.json",
+"1_shot": "FEWREL_data/episodes/DEV_5w_1s_5q_10K_50_NOTA_rate_seed_456.json",
+"5_shot": "FEWREL_data/episodes/DEV_5w_5s_5q_10K_50_NOTA_rate_seed_456.json",
 };
 //local bert_type = 'bert-large-cased';
-local batch_size = {"100k":4,"5_shot_100k":2};
-local setup = "5_shot_100k";
+local batch_size = {"1_shot":4,"5_shot":2};
+local setup = "1_shot";
 local LR = 0.00001;
 local instances_per_epoch = 6000;
-local seed = {"100k":301191,"5_shot_100k":6717};
+local seed = {"1_shot":301191,"5_shot":6717};
 
 {
 "random_seed":seed[setup],

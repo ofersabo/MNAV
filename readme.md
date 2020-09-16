@@ -25,3 +25,14 @@ These commands generate new datasets in which special tokens are surrounding the
 3. python FewRel_generate_episodes.py.py FEWREL_data/val_wiki_markers.json 10000 5 1 50 5 456 ./FEWREL_data/episodes/DEV_5w_1s_5q_10K_50_NOTA_rate_seed_456.json
 4. python FewRel_generate_episodes.py.py FEWREL_data/val_wiki_markers.json 10000 5 5 50 5 456 ./FEWREL_data/episodes/DEV_5w_5s_5q_10K_50_NOTA_rate_seed_456.json
 
+## Train the Few-Shot MNAV model
+
+ ##### FewRel model
+* 1 shot model: allennlp train experiments/FEWREL_1_shot.jsonnet -s results/fewrel/1_shot/ --include-package my_library
+* 5 shot model: allennlp train experiments/FEWREL_5_shot.jsonnet -s results/fewrel/5_shot/ --include-package my_library
+ 
+ ##### Few-Shot TACRED
+
+
+
+
