@@ -10,23 +10,23 @@ local models = {
 };
 
 local train_data = {
-"50K_1shot": "data/TACRED/"+split+"_TACRED_split/TRAIN_10w_1s_3q_50K.json",
-"50K_5shot": "data/TACRED/"+split+"_TACRED_split/train_5w_5s_1q_50K.json",
+"50K_1shot": "TACRED_episodes/train_5w_1s_3q_50K_seed_123.json",
+"50K_5shot": "TACRED_episodes/train_5w_5s_1q_50K_seed_123.json",
 
 # revisited
-"REVISITED_50K_1_shot": "data/TACRED/"+split+"_TACRED_split/TRAIN_10w_1s_3q_50K.json",
-"REVISITED_50K_5_shot": "data/TACRED/"+split+"_TACRED_split/train_5w_5s_1q_50K.json",
+"REVISITED_50K_1_shot": "",
+"REVISITED_50K_5_shot": "",
 
 
 };
 local dev_data = {
-"50K_1shot": "data/TACRED/"+split+"_TACRED_split/DEV_5w_1s_3q_10K.json",
-"50K_5shot": "data/TACRED/"+split+"_TACRED_split/dev_5w_5s_3q_10K.json",
+"50K_1shot": "TACRED_episodes/dev_5w_1s_3q_10K_seed_123.json",
+"50K_5shot": "TACRED_episodes/dev_5w_5s_3q_10K_seed_123.json",
 
 
 # revisited 3
-"REVISITED_50K_1_shot": "data/TACRED/revisited/"+split+"_TACRED_REVISITED_split/dev_5w_1s_3q_10K.json",
-"REVISITED_50K_5_shot": "data/TACRED/revisited/"+split+"_TACRED_REVISITED_split/dev_5w_5s_3q_10K.json",
+"REVISITED_50K_1_shot": "",
+"REVISITED_50K_5_shot": "",
 
 
 };
@@ -37,21 +37,22 @@ local test_data = {
 "50K_5shot":"~/NOTA/data/TACRED/test_episodes/split_3_5_way_5_shot.json",
 
 # revisited 3
-"REVISITED_50K_1_shot": "data/TACRED/revisited/"+split+"_TACRED_REVISITED_split/test_episodes/3_split_5way_1shots_10K_episodes_3q_seed_160290.json",
-"REVISITED_50K_5_shot": "data/TACRED/revisited/"+split+"_TACRED_REVISITED_split/test_episodes/3_split_5way_5shots_10K_episodes_3q_seed_160290.json",
+"REVISITED_50K_1_shot": "",
+"REVISITED_50K_5_shot": "",
 
 };
 
+local setup = "50K_5shot";
 local LR = 0.00001;
 local bert_type = 'bert-base-cased';
 //local instances_per_epoch = null;
 local instances_per_epoch = 700;
 local batch_size = 1;
-local seed = 1568;
+local seed = {"50K_1shot":301191,"50K_5shot":1568};
 {
-"random_seed":seed,
-"numpy_seed":seed,
-"pytorch_seed":seed,
+"random_seed":seed[setup],
+"numpy_seed":seed[setup],
+"pytorch_seed":seed[setup],
   "dataset_reader": {
     "type": "NOTA_reader",
     "bert_model": bert_type,
