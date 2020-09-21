@@ -28,9 +28,13 @@ These commands generate new datasets in which special tokens are surrounding the
 
 ##### Few-Shot TACRED dataset
 
-*
-*
-*
+To create episodes for Few-shot TACRED, use the script which we published in the Few-Shot TACRED data repository:
+https://github.com/ofersabo/Few_Shot_transformation_and_sampling
+
+* python episodes_sampling_for_fs_TACRED.py --file_name data_few_shot/_dev_data_markers.json --episodes_size 10000 --N 5 --K 1 --number_of_queries 3 --seed 123 --output_file_name TACRED_episodes/dev_5w_1s_3q_10K_seed_123.json
+* python episodes_sampling_for_fs_TACRED.py --file_name data_few_shot/_dev_data_markers.json --episodes_size 10000 --N 5 --K 5 --number_of_queries 3 --seed 123 --output_file_name TACRED_episodes/dev_5w_5s_3q_10K_seed_123.json 
+* python episodes_sampling_for_fs_TACRED.py --file_name data_few_shot/new_downsampled_train_data_markers.json --episodes_size 50000 --N 5 --K 1 --number_of_queries 3 --seed 123 --output_file_name TACRED_episodes/train_5w_1s_3q_50K_seed_123.json 
+* python episodes_sampling_for_fs_TACRED.py --file_name data_few_shot/new_downsampled_train_data_markers.json --episodes_size 50000 --N 5 --K 5 --number_of_queries 1 --seed 123 --output_file_name TACRED_episodes/train_5w_5s_1q_50K_seed_123.json
 
 
 ## 3. Train the Few-Shot MNAV model
@@ -40,7 +44,8 @@ These commands generate new datasets in which special tokens are surrounding the
 * 5 shot model: allennlp train experiments/FEWREL_5_shot.jsonnet -s results/fewrel/5_shot/ --include-package my_library
  
  ##### Few-Shot TACRED
-
+* allennlp train experiments/Few_Shot_TACRED_1_shot.jsonnet -s results/TACRED/1_shot/MNAV/ --include-package my_library
+* allennlp train experiments/Few_Shot_TACRED_5_shot.jsonnet -s results/TACRED/5_shot/MNAV/ --include-package my_library 
 
 
 
