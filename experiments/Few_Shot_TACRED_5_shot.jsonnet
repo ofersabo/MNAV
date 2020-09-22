@@ -81,7 +81,7 @@ local seed = {"50K_1shot":301191,"50K_5shot":1568};
   "model": {
     "type": models[which_model],
     "bert_model": bert_type,
-    [if which_model == "many_navs" then "path_to_vector"]: "per_categories_NAV_250_vecs.npy",
+    [if which_model == "many_navs" then "path_to_vector"]: "few_shot_tacred_MNAV_250_vecs.npy",
     "hidden_dim": 2000,
     "raise_softmax": -1,
     "dot_product": true,
