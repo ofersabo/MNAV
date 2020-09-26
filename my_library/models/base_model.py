@@ -154,7 +154,7 @@ class NotaAverage(Model):
                 query_after_mlp_aggregated)
             difference_nota2queries = self.distance_to_average(difference_nota2queries)
 
-        scores = self.meta_learner(final_matrix_represnetation, query_after_mlp)
+        scores = self.distance_layer(final_matrix_represnetation, query_after_mlp)
         compactness_score = self.compute_compactness(K_shot, after_mlp, scores, user_relations)
         negative_cosine = self.compute_negative_cosine(scores, after_mlp, query_after_mlp, N_way, K_shot)
         scores = scores.view(scores.size(0) * scores.size(1), scores.size(2))
@@ -193,7 +193,7 @@ class NotaAverage(Model):
         if self.negative_cos:
             output_dict["loss"] += negative_cosine
 
-    def meta_learner(self, final_matrix_represnetation, query_after_mlp):
+    def distance_layer(self, final_matrix_represnetation, query_after_mlp):
         if self.dot_product:
             test_matrix = query_after_mlp
             tensor_of_matrices = final_matrix_represnetation.permute(0, 2, 1)
@@ -217,16 +217,6 @@ class NotaAverage(Model):
 
         return x
 
-    def largest_dot_product_between_differnet_relations(self, matrix):
-        assert len(matrix.shape) == 3
-        transpose = matrix.permute(0,2,1)
-        res = torch.matmul(matrix,transpose)
-        res[:, range(res.size(1)), range(res.size(2))] = 0
-        # return res.mean() # doesnt work because most of the dot product return negative values
-        flat = res.view(matrix.size(0),-1)
-        values, indices = flat.max(1)
-        return values.max()
-
     @overrides
     def get_metrics(self, reset: bool = False) -> Dict[str, float]:
         metric_results = {}
@@ -246,48 +236,3 @@ class NotaAverage(Model):
 
     def return_zero_torch(self):
         return torch.tensor([0.0]).to(self.device)
-
-    def compute_compactness(self, K_shot, after_mlp_aggregated, scores,user_relations):
-        return self.return_zero_torch()
-
-    def compute_negative_cosine(self, scores, final_representation, query_matrix, N_way, K_shot):
-        if not self.negative_cos:
-            return self.return_zero_torch()
-
-        attention_for_compactness = softmax(scores, dim=-1)[:, :, :N_way]
-        if self.raise_softmax > 1:
-            attention_for_compactness = attention_for_compactness ** self.raise_softmax
-            attention_for_compactness = self.normalize(attention_for_compactness)
-
-        cosine_sim = cosine_distance(final_representation.view(-1, N_way * K_shot, final_representation.size(-1)),query_matrix)
-        cosine_sim = cosine_sim.view(cosine_sim.size(0), cosine_sim.size(1), N_way, K_shot)
-        sim_times_attention = cosine_sim * attention_for_compactness.unsqueeze(-1)
-        return sim_times_attention.sum()
-
-    def normalize(self,vec):
-        x = normalize(vec, p=1, dim=-1)
-        return x
-
-def cosine_distance(x1, x2, eps=1e-8):
-    w1 = x1.norm(p=2, dim=2, keepdim=True)
-    w2 = x2.norm(p=2, dim=2, keepdim=True)
-    return torch.matmul(x2, x1.permute(0, 2, 1)) / (w2 * w1.permute(0, 2, 1)).clamp(min=eps)
-
-    # @overrides
-    # def forward(self,  sentences, locations):
-    #     bert_context_for_relation = self.embbedings(sentences)
-    #     bert_represntation = self.extract_vectors_from_markers(bert_context_for_relation, locations)
-    #
-    #     after_mlp_aggregated = self.go_thorugh_mlp(bert_represntation,self.first_liner_layer,self.second_liner_layer).to(self.device)
-    #     try:
-    #         x = self.no_relation_vector
-    #         try:
-    #             x = self.nota_value
-    #             return {"vector": after_mlp_aggregated}
-    #         except:
-    #             NOTA = self.go_thorugh_mlp(self.no_relation_vector,self.first_liner_layer,self.second_liner_layer).to(self.device)
-    #             return {"vector":after_mlp_aggregated,"NOTA":NOTA}
-    #     except:
-    #         pass
-    #
-    #     return {"vector":after_mlp_aggregated}

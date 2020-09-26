@@ -1,4 +1,4 @@
-from my_library.models.no_relation_avarage_NOTA_model import *
+from my_library.models.base_model import *
 import numpy as np
 from my_library.my_loss_metric import SpecialLoss, NotaNotInsideBest2,F1AllClasses,measure_navs
 
@@ -112,8 +112,8 @@ class manyNavs(NotaAverage):
                 query_after_mlp_aggregated)
             difference_nota2queries = self.distance_to_average(difference_nota2queries)
 
-        N_class_scores = self.meta_learner(final_matrix_represnetation, query_after_mlp)
-        scores_of_NOTA = self.meta_learner(no_relation_after_mlp.unsqueeze(0), query_after_mlp)
+        N_class_scores = self.distance_layer(final_matrix_represnetation, query_after_mlp)
+        scores_of_NOTA = self.distance_layer(no_relation_after_mlp.unsqueeze(0), query_after_mlp)
         maximal_NOTA_value,which_vector_maximal = scores_of_NOTA.max(dim=-1,keepdim=True)
 
         N_class_scores = N_class_scores.view(N_class_scores.size(0) * N_class_scores.size(1), N_class_scores.size(2))
@@ -129,11 +129,8 @@ class manyNavs(NotaAverage):
                 difference_nota += difference_nota2queries
             self.add_more_loss_terms(difference_nota, output_dict, None)
 
-            # for metric in self.metrics.values():
-            #     metric(scores, label)
             self.metrics['acc'](scores, flat_labels)
             self.measure_additional_metric(difference_nota, None)
-            # self.metrics['NOTA_NotInBest2'](scores)
         scores = scores.view(bert_context_for_relation.size(0), number_queries, N_way + 1)
         if gold and user_relations:
             self.metrics['f1_no_NOTA'](scores,label,[[r for r in episode] for episode in user_relations],self.training)
@@ -156,7 +153,7 @@ class manyNavs(NotaAverage):
         if self.negative_cos:
             output_dict["loss"] += negative_cosine
 
-    def meta_learner(self, final_matrix_represnetation, query_after_mlp):
+    def distance_layer(self, final_matrix_represnetation, query_after_mlp):
         if self.dot_product:
             test_matrix = query_after_mlp
             tensor_of_matrices = final_matrix_represnetation.permute(0, 2, 1)
@@ -177,21 +174,3 @@ class manyNavs(NotaAverage):
     def modify_scores(self,scores,compactness_score):
         return self.add_fixed_value_to_each_score_task(scores, compactness_score)
 
-    # @overrides
-    # def forward(self,  sentences, locations):
-    #     bert_context_for_relation = self.embbedings(sentences)
-    #     bert_represntation = self.extract_vectors_from_markers(bert_context_for_relation, locations)
-    #
-    #     after_mlp_aggregated = self.go_thorugh_mlp(bert_represntation,self.first_liner_layer,self.second_liner_layer).to(self.device)
-    #     try:
-    #         x = self.no_relation_vector
-    #         try:
-    #             x = self.nota_value
-    #             return {"vector": after_mlp_aggregated}
-    #         except:
-    #             NOTA = self.go_thorugh_mlp(self.no_relation_vector,self.first_liner_layer,self.second_liner_layer).to(self.device)
-    #             return {"vector":after_mlp_aggregated,"NOTA":NOTA}
-    #     except:
-    #         pass
-    #
-    #     return {"vector":after_mlp_aggregated}
