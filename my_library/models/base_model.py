@@ -44,7 +44,7 @@ BERT_BASE_CONFIG = {"attention_probs_dropout_prob": 0.1,
                    }
 linear = "linear"
 
-@Model.register('average_no_relation')
+@Model.register('base_model')
 class NotaAverage(Model):
     def __init__(self,
                  vocab: Vocabulary,
@@ -61,8 +61,6 @@ class NotaAverage(Model):
                  negative_cosine:  bool = False,
                  add_loss_nota2queries = False,
                  raise_softmax: int = 1,
-                 oracle_for_compactness: bool = False,
-
                  ) -> None:
         super().__init__(vocab,regularizer)
         self.embbedings = text_field_embedder
@@ -110,9 +108,7 @@ class NotaAverage(Model):
     def average_tensor_of_sentences(self,values_of_all_sentences):
             return values_of_all_sentences.mean(dim=0,keepdim=True).to(self.device)
 
-    def reduce_K_to_mean(self,matrix,N_way,K_shot):
-        # assert matrix.size(1)%5 == 0
-        # prototypes = matrix.reshape((matrix.size(0),5, matrix.size(1)/5, -1)).mean(dim=2)
+    def reduce_K_to_mean(self,matrix):
         prototypes = matrix.mean(dim=2).squeeze(2)
         return prototypes
 
@@ -137,7 +133,7 @@ class NotaAverage(Model):
         after_mlp = after_mlp_aggregated.view(bert_context_for_relation.size(0), N_way, K_shot,
                                               after_mlp_aggregated.size(-1))
 
-        final_matrix_represnetation = self.reduce_K_to_mean(after_mlp, N_way, K_shot)
+        final_matrix_represnetation = self.reduce_K_to_mean(after_mlp)
         if self.no_relation_vector is not None:
             final_matrix_represnetation = self.add_random_vector_to_each_batch(final_matrix_represnetation,
                                                                                no_relation_after_mlp)
@@ -168,11 +164,8 @@ class NotaAverage(Model):
                 difference_nota += difference_nota2queries
             self.add_more_loss_terms(difference_nota, output_dict, negative_cosine)
 
-            # for metric in self.metrics.values():
-            #     metric(scores, label)
             self.metrics['acc'](scores, flat_labels)
             self.measure_additional_metric(difference_nota, negative_cosine)
-            # self.metrics['NOTA_NotInBest2'](scores)
         scores = scores.view(bert_context_for_relation.size(0), number_queries, N_way + 1)
         if gold and user_relations:
             self.metrics['f1_no_NOTA'](scores,label,[[r for r in episode] for episode in user_relations],self.training)
@@ -207,8 +200,7 @@ class NotaAverage(Model):
         return scores
 
     def go_thorugh_mlp(self, concat_represntentions,first_layer,second_layer):
-        # return self.relation_layer_norm(concat_represntentions)
-        after_drop_out_layer = self.drop_layer(concat_represntentions) # fixme maybe move to first row here
+        after_drop_out_layer = self.drop_layer(concat_represntentions)
         after_first_layer = first_layer(after_drop_out_layer)
         x = self.tanh(after_first_layer)
         x = second_layer(x)

@@ -21,7 +21,6 @@ class manyNavs(NotaAverage):
                  negative_cosine:  bool = False,
                  add_loss_nota2queries = False,
                  raise_softmax: int = 1,
-                 oracle_for_compactness: bool = False,
                  number_of_NAVs: int = 20,
                  path_to_vector: str = "NAV_250_vecs.npy",
 
@@ -95,10 +94,7 @@ class manyNavs(NotaAverage):
         after_mlp = after_mlp_aggregated.view(bert_context_for_relation.size(0), N_way, K_shot,
                                               after_mlp_aggregated.size(-1))
 
-        final_matrix_represnetation = self.reduce_K_to_mean(after_mlp, N_way, K_shot)
-
-        # final_matrix_represnetation = self.add_random_vector_to_each_batch(final_matrix_represnetation,
-        #                                                                        no_relation_after_mlp)
+        final_matrix_represnetation = self.reduce_K_to_mean(after_mlp)
 
         ''' query matrix'''
         query_representation = self.embbedings(test)

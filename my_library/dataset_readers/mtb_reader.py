@@ -30,7 +30,6 @@ class MTBDatasetReader(DatasetReader):
         super().__init__(lazy)
         self._tokenizer = tokenizer or WordTokenizer()
         self._token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
-        # self._tokenizer.add_special_tokens({'additional_special_tokens':[head_start_token,head_end_token,tail_start_token,tail_end_token])
         self.spacy_splitter = SpacyWordSplitter(keep_spacy_tokens=True)
         self.TRAIN_DATA = "meta_train"
         self.TEST_DATA = "meta_test"
@@ -41,7 +40,6 @@ class MTBDatasetReader(DatasetReader):
         self.do_once = True
         self.debug = debug
 
-        # write host name
         import socket
         hostname = socket.gethostname()
         logger.info("hostname is: %s", hostname)
@@ -103,7 +101,6 @@ class MTBDatasetReader(DatasetReader):
         assert len(N_relations) == len(location_list) == len(all_tokens_sentences)
         N_relations, location_list, all_tokens_sentences = ListField(N_relations), ListField(location_list),ListField(all_tokens_sentences)
         fields = {'sentences': N_relations, "locations": location_list, "clean_tokens": all_tokens_sentences}
-        # fields = {'sentences': N_relations, "locations": location_list}
 
         '''
         query_part
@@ -153,3 +150,4 @@ class MTBDatasetReader(DatasetReader):
         target_relation_names = MetadataField(target_relation_names)
         user_target_relations = MetadataField(user_target_relations)
         return user_target_relations,target_relation_names
+

@@ -1,4 +1,4 @@
-from my_library.models.no_relation_avarage_NOTA_model import *
+from my_library.models.base_model import *
 
 
 
@@ -17,7 +17,6 @@ class NOTAScalar(NotaAverage):
                  drop_out_rate: float = 0.2,
                  dot_product: bool = True,
                  negative_cosine:bool =False,
-                 oracle_for_compactness: bool =False,
                  raise_softmax:int = 2,
                  number_of_NAVs: int = 20,
                  path_to_vector: str = "NAV_250_vecs.npy",
@@ -51,13 +50,3 @@ class NOTAScalar(NotaAverage):
     @overrides
     def distance_to_average(self, vector):
         return torch.tensor([0.0])
-
-
-
-    # @overrides
-    # def forward(self,  sentences, locations):
-    #     bert_context_for_relation = self.embbedings(sentences)
-    #     bert_represntation = self.extract_vectors_from_markers(bert_context_for_relation, locations)
-    #
-    #     after_mlp_aggregated = self.go_thorugh_mlp(bert_represntation,self.first_liner_layer,self.second_liner_layer).to(self.device)
-    #     return {"vector":after_mlp_aggregated,"NOTA":self.nota_value}

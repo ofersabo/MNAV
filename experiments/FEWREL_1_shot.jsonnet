@@ -3,7 +3,6 @@ local cuda = [0,1,2,3];
 local bert_type = 'bert-base-cased';
 local which_model = "many_navs";
 local models = {
-//"NAV":"average_no_relation",
 //"no_average": "average_no_relation",
 //"threshold": "nota_scalar" ,
 "many_navs":"baseline_many_navs",
@@ -64,7 +63,6 @@ local seed = {"1_shot":301191,"5_shot":6717};
     "number_of_linear_layers": 2,
     "drop_out_rate": 0.1,
     "skip_connection": true,
-    "oracle_for_compactness": false,
     "negative_cosine":false,
 //    "add_loss_nota2queries": true,
     "text_field_embedder": {

@@ -1,6 +1,4 @@
 from allennlp.data.tokenizers.word_splitter import *
-from allennlp.data.tokenizers.token import show_token
-# from allennlp.data.token_indexers import PretrainedBertIndexer
 
 @WordSplitter.register("my-bert-basic-tokenizer")
 class MyBertWordSplitter(WordSplitter):
@@ -20,7 +18,4 @@ class MyBertWordSplitter(WordSplitter):
 
     @overrides
     def split_words(self, sentence: str) -> List[Token]:
-        # for text in self.basic_tokenizer.tokenize(sentence):
-            # if text in self.never_split[:5] or text.startswith("a"):
-                # print(show_token(Token(text)))
         return [Token(text) for text in self.basic_tokenizer.tokenize(sentence)]
