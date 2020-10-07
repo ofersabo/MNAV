@@ -3,8 +3,8 @@
 ## 1. Prerequisites 
 First create a conda env which support the required packages
 use out environment.yml file
-```bash 
-create -f environment.yml
+```bash
+conda env create --name mnav --file=environment.yml 
 ```
 Be aware that the first line of environment.yml defines the env name.
 
