@@ -16,13 +16,9 @@ NOTA_RATE = float(sys.argv[5]) if len(sys.argv) > 5 else float(50)
 number_of_queries = int(sys.argv[6]) if len(sys.argv) > 6 else 1
 seed = int(sys.argv[7]) if len(sys.argv) > 7 else 123
 train_file = sys.argv[8] if len(sys.argv) > 8 else "train_NOTA_1M.json"
-if train_file == "":
-    train_file = filename[filename.find('_') + 1:] + "_" + str(size)
-prefix = ""
 print("The seed is ",seed)
 random.seed(seed)
 np.random.seed(seed)
-# data = {"train":"train_" + str(size[0]) + ".json","val":"val_" +str(size[1])}
 
 whole_division = json.load(open(filename),object_pairs_hook=OrderedDict)
 relations = list(whole_division.keys())
@@ -98,7 +94,7 @@ def FewRel():
         class_relations.append((aux_0,aux_1))
 
     final_data = [episodes, targets_lists,class_relations]
-    json.dump(final_data, open(prefix + train_file, "w"))
+    json.dump(final_data, open(train_file, "w"))
 
 
 if __name__ == "__main__":
