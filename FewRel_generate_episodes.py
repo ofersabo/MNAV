@@ -3,10 +3,6 @@ import random
 import numpy as np
 import os,sys,inspect
 from collections import OrderedDict
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-grantparentdir = os.path.dirname(parentdir)
-sys.path.insert(0,grantparentdir)
 
 filename = sys.argv[1] if len(sys.argv) > 1 else "../fewrel_train_markers.json"
 size = int(sys.argv[2]) if len(sys.argv) > 2 else 100000
@@ -28,7 +24,6 @@ NOTA_RATE = NOTA_RATE / 100.0
 def create_episode(whole_division,relations,N,K,number_of_queries,NOTA_RATE):
     assert "no_relation" not in whole_division
     sampled_relation = random.sample(relations, N)
-    # target_relation_name = id2name[target_relation.lower()]
     meta_train = [random.sample(whole_division[i], K) for i in sampled_relation]
 
     meta_test_list = []
@@ -43,7 +38,6 @@ def create_episode(whole_division,relations,N,K,number_of_queries,NOTA_RATE):
             possible_relation = [r for r in relations if r not in sampled_relation]
             target_relation = random.sample(possible_relation, 1)[0]
             assert not (target_relation in sampled_relation)
-            # target_relation_name = id2name[randon_relation.lower()]
             meta_test = random.choice(whole_division[target_relation])
             target = int(N)
         else:
@@ -74,9 +68,6 @@ def relationID_to_name(file_name):
                 name2id = {v: k for k, v in id2name.items()}
     return id2name, name2id
 
-
-# id2name, name2id = relationID_to_name("fewrel_mapping.json")
-# pre_work = preprocessing(bert_model)
 
 def main():
     FewRel()
