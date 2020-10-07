@@ -10,6 +10,13 @@ Be aware that the first line of environment.yml defines the env name.
 
 ## 2. Preprocessing 
 
+Getting access to the FewRel and Few-Shot TACRED datasets.
+
+FewRel: https://thunlp.github.io/2/fewrel2_da.html
+
+Few-Shot TACRED: https://github.com/ofersabo/Few_Shot_transformation_and_sampling
+
+
 ### Augment the dataset with special tokens before and after the target entities
 These commands generate new datasets in which special tokens are surrounding the target entities. 
  ##### FewRel dataset
