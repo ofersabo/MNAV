@@ -1,6 +1,6 @@
 from my_library.models.base_model import *
 import numpy as np
-from my_library.my_loss_metric import SpecialLoss, NotaNotInsideBest2,F1AllClasses,measure_navs
+from my_library.my_loss_metric import SpecialLoss, F1AllClasses,measure_navs
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -36,7 +36,6 @@ class manyNavs(NotaAverage):
         self.crossEntropyLoss   = torch.nn.CrossEntropyLoss()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.metrics = metrics or {
-            # "NOTA_NotInBest2": NotaNotInsideBest2(),
             "acc": CategoricalAccuracy(),
             "loss_of_NOTA": SpecialLoss(),
             "f1_no_NOTA": F1AllClasses(),

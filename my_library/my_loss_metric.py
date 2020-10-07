@@ -41,41 +41,6 @@ class SpecialLoss(Metric):
         self.total_loss = 0.0
         self.count = 0.0
 
-@Metric.register("NOTA_not_inside_best_2")
-class NotaNotInsideBest2(Metric):
-    def __init__(self) -> None:
-        self.total_loss = 0.
-        self.count = 0.
-
-    def __call__(self,the_scores):
-        nota_index = the_scores.size(1) - 1
-        sorted_ = np.argsort(the_scores[:, :].detach().cpu())
-        sorted_ = sorted_[:,-2:]
-        sum_of_NOTA = torch.sum(sorted_[:,-2:] == nota_index)
-
-        self.total_loss += the_scores.size(0) - sum_of_NOTA
-        self.count += the_scores.size(0)
-
-    def get_metric(self, reset: bool = False):
-        """
-        Returns
-        -------
-        The accumulated accuracy.
-        """
-        if self.count > 1e-12:
-            accuracy = float(self.total_loss) / float(self.count)
-        else:
-            accuracy = 0.0
-        if reset:
-            self.reset()
-        return accuracy
-
-    @overrides
-    def reset(self):
-        self.total_loss = 0.0
-        self.count = 0.0
-
-
 @Metric.register("F1_for_all_classes")
 class F1AllClasses(FBetaMeasure):
     def __init__(self,

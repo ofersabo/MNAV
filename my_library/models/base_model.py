@@ -12,7 +12,7 @@ from allennlp.nn import InitializerApplicator, RegularizerApplicator
 from torch.nn.parameter import Parameter
 from allennlp.nn import util
 from torch.nn.functional import softmax,normalize
-from my_library.my_loss_metric import SpecialLoss, NotaNotInsideBest2,F1AllClasses
+from my_library.my_loss_metric import SpecialLoss, F1AllClasses
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -69,7 +69,6 @@ class NotaAverage(Model):
         self.crossEntropyLoss   = torch.nn.CrossEntropyLoss()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.metrics = metrics or {
-            # "NOTA_NotInBest2": NotaNotInsideBest2(),
             "acc": CategoricalAccuracy(),
             "loss_of_NOTA": SpecialLoss(),
             "f1_no_NOTA": F1AllClasses(),
