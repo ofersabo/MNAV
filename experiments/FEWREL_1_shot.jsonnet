@@ -1,10 +1,7 @@
 local cuda = [0,1,2,3];
-//local cuda = [3];
 local bert_type = 'bert-base-cased';
 local which_model = "many_navs";
 local models = {
-//"no_average": "average_no_relation",
-//"threshold": "nota_scalar" ,
 "many_navs":"baseline_many_navs",
 };
 
@@ -17,7 +14,6 @@ local dev_data = {
 "1_shot": "FEWREL_data/episodes/DEV_5w_1s_5q_10K_50_NOTA_rate_seed_456.json",
 "5_shot": "FEWREL_data/episodes/DEV_5w_5s_5q_10K_50_NOTA_rate_seed_456.json",
 };
-//local bert_type = 'bert-large-cased';
 local batch_size = {"1_shot":4,"5_shot":2};
 local setup = "1_shot";
 local LR = 0.00001;
@@ -50,7 +46,6 @@ local seed = {"1_shot":301191,"5_shot":6717};
   },
   "train_data_path": train_data[setup] ,
   "validation_data_path": dev_data[setup],
-//  "test_data_path":second_dev_data[setup],
   "evaluate_on_test":false,
   "model": {
     "type": models[which_model],
@@ -64,7 +59,6 @@ local seed = {"1_shot":301191,"5_shot":6717};
     "drop_out_rate": 0.1,
     "skip_connection": true,
     "negative_cosine":false,
-//    "add_loss_nota2queries": true,
     "text_field_embedder": {
         "allow_unmatched_keys": true,
         "embedder_to_indexer_map": {
@@ -101,7 +95,6 @@ local seed = {"1_shot":301191,"5_shot":6717};
     "num_serialized_models_to_keep": 1,
     "validation_metric": "+m_f1",
     "num_epochs": 50,
-//    "grad_norm": 2.0,
     "patience": 100,
     "cuda_device": cuda
   }

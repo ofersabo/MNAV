@@ -1,10 +1,7 @@
 local cuda = [0,1,2,3];
-//local cuda = [3];
 local bert_type = 'bert-base-cased';
 local which_model = "many_navs";
 local models = {
-//"no_average": "average_no_relation",
-//"threshold": "nota_scalar" ,
 "many_navs":"baseline_many_navs",
 };
 
@@ -44,7 +41,6 @@ local test_data = {
 local setup = "50K_5shot";
 local LR = 0.00001;
 local bert_type = 'bert-base-cased';
-//local instances_per_epoch = null;
 local instances_per_epoch = 700;
 local batch_size = 1;
 local seed = {"50K_1shot":301191,"50K_5shot":1568};
@@ -74,7 +70,6 @@ local seed = {"50K_1shot":301191,"50K_5shot":1568};
   },
   "train_data_path": train_data[setup] ,
   "validation_data_path": dev_data[setup],
-//  "test_data_path":second_dev_data[setup],
   "test_data_path": test_data[setup],
   "evaluate_on_test":true,
   "model": {
@@ -89,7 +84,6 @@ local seed = {"50K_1shot":301191,"50K_5shot":1568};
     "drop_out_rate": 0.1,
     "skip_connection": true,
     "negative_cosine":false,
-//    "add_loss_nota2queries": true,
     "text_field_embedder": {
         "allow_unmatched_keys": true,
         "embedder_to_indexer_map": {
@@ -116,7 +110,6 @@ local seed = {"50K_1shot":301191,"50K_5shot":1568};
     "validation_iterator": {
     "type": "basic",
     "batch_size": 5,
-//    "instances_per_epoch": null
   },
   "trainer": {
     "optimizer": {
@@ -126,7 +119,6 @@ local seed = {"50K_1shot":301191,"50K_5shot":1568};
     "num_serialized_models_to_keep": 1,
     "validation_metric": "+m_f1",
     "num_epochs": 20,
-//    "grad_norm": 2.0,
     "patience": 100,
     "cuda_device": cuda
   }
