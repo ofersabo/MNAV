@@ -95,8 +95,7 @@ local seed = {"1_shot":301191,"5_shot":6717};
     "num_serialized_models_to_keep": 1,
     "validation_metric": "+m_f1",
     "num_epochs": 50,
-    "patience": -1,
-    "cuda_device": cuda
+    "cuda_device":  cuda
   }
 }
 
