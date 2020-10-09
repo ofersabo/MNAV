@@ -1,5 +1,4 @@
 local cuda = [0,1,2,3];
-//local cuda = [3];
 local bert_type = 'bert-base-cased';
 local which_model = "many_navs";
 local models = {
@@ -44,7 +43,7 @@ local LR = 0.00001;
 local bert_type = 'bert-base-cased';
 local instances_per_epoch = 700;
 local batch_size = 1;
-local seed = {"50K_1shot":301191,"50K_5shot":1568};
+local seed = {"50K_1shot":130353,"50K_5shot":1568};
 {
 "random_seed":seed[setup],
 "numpy_seed":seed[setup],
