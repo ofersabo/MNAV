@@ -63,7 +63,6 @@ class manyNavs(NotaAverage):
             x = np.load(path_to_vector)
             x = x[np.random.choice(x.shape[0], number_of_NAVs, replace=False), :]
             x = torch.from_numpy(x).to(device=self.device, dtype=torch.float)
-            x = x[:number_of_NAVs]
             self.no_relation_vector = Parameter(x, requires_grad=True)
 
     def add_random_vector_to_each_batch(self,values,no_relation):
