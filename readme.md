@@ -6,7 +6,7 @@ use out environment.yml file
 ```bash
 conda env create --name mnav --file=environment.yml 
 ```
-Be aware that the first line of environment.yml defines the env name.
+Note: the first line of environment.yml defines the env name.
 
 ## 2. Preprocessing 
 
